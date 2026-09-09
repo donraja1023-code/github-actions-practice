@@ -554,9 +554,9 @@ Only Free till limits set by Github. See [free usage limits](https://docs.github
 You can use your own runner hosted on K8s, VPC, etc. See more on [self hosted runners](https://docs.github.com/en/actions/concepts/runners/self-hosted-runners)
 
 Some commonly used options include for this:
-**RunsOn** — provisions GitHub Actions runners as temporary AWS EC2 instances.
-**Actions Runner Controller (ARC)** — runs GitHub Actions runners inside Kubernetes clusters.
-**Railway GitHub Actions Runners** — allows you to run self-hosted GitHub Actions runners on Railway.
+- **RunsOn** — provisions GitHub Actions runners as temporary AWS EC2 instances.
+- **Actions Runner Controller (ARC)** — runs GitHub Actions runners inside Kubernetes clusters.
+- **Railway GitHub Actions Runners** — allows you to run self-hosted GitHub Actions runners on Railway.
 
 Example using Github Hosted runners:
 ```yaml
