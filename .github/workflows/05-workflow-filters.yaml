@@ -3,18 +3,18 @@ name: Workflow Filters
 on:
   push:
     # Only run for these branches
-    branches:
-      - master
-      - develop
+    # branches:
+    #   - master
+    #   - develop
 
-    # Only run when files under these paths change
-    paths:
-      - "images/**"
-      - "README.md"
+    # # Only run when files under these paths change
+    # paths:
+    #   - "images/**"
+    #   - "README.md"
 
     # Run for version tags such as v1.0.0
-    tags:
-      - "v*"
+    # tags:
+    #   - "v*"
 
   pull_request:
     # Only run when the PR targets master
