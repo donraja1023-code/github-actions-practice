@@ -1,3 +1,5 @@
+name: Parallel vs Dependent Jobs
+
 on:
   workflow_dispatch:
 
