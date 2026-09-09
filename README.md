@@ -110,7 +110,7 @@ jobs:
 
 This example is available at: [.github/workflows/02-different-step-types.yaml](.github/workflows/02-different-step-types.yaml).
 
-The third one may interest you. I browse github market for random java hello world which is: `sormuras/hello-world-java-action` that I found. You write this in `uses`key. The `with` block determines the input for this action. You should check readme or docs of each action to find what inputs it accepts.
+The third one may interest you. I browse Github marketplace for random java hello world action which is: `sormuras/hello-world-java-action` that I found. **Github Actions from marketplace is nothing but pre baked set of steps somebody else has written which you are just kind of importing in one of the steps of your workflow**.  You write this in `uses`key. The `with` block determines the input for this action. You should check readme or docs of each action to find what inputs it accepts.
 
 You specify version for the action itself as `ACTION@version`. You can use `@v1` or any version that actions supports. For version pinning, it's recommended to use commit hash as such:
 ```
@@ -119,4 +119,6 @@ uses: sormuras/hello-world-java-action@34113a1c31b4deb2efc4810cd45ad16a90f45c3f
 
 `34113a1c31b4deb2efc4810cd45ad16a90f45c3f` is nothing but commit hash you want to pin i.e. **you want exact this version because it is stable and works well for  your project**.
 
-Just like in [first example](#1-simple-hello-world-bash), after `git push`, you trigger this manually because of `workflow_dispatch`:
+Just like in [first example](#1-simple-hello-world-bash), after `git push`, you trigger this manually because of `workflow_dispatch`. If you run it, you should see:
+
+![alt text](/images/02-success.png)
