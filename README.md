@@ -540,3 +540,61 @@ Production:
 
 ![alt text](/images/07-prod.png)
 
+## 8. Runners (Machines Where GHA Run)
+
+You have different option for choosing runners which includes all major OS:
+### Github Hosted Runners
+- [Github Hosted Runners For Public Repos](https://docs.github.com/en/actions/reference/runners/github-hosted-runners#standard-github-hosted-runners-for-public-repositories)
+- [Github Hosted Runners For Private Repos](https://docs.github.com/en/actions/reference/runners/github-hosted-runners#standard-github-hosted-runners-for-prvivate-repositories)
+
+Only Free till limits set by Github. See [free usage limits](https://docs.github.com/en/billing/concepts/product-billing/github-actions#free-use-of-github-actions) for more info.
+
+### Self Hosted Runners
+
+You can use your own runner hosted on K8s, VPC, etc. See more on [self hosted runners](https://docs.github.com/en/actions/concepts/runners/self-hosted-runners)
+
+Some commonly used options include for this:
+**RunsOn** — provisions GitHub Actions runners as temporary AWS EC2 instances.
+**Actions Runner Controller (ARC)** — runs GitHub Actions runners inside Kubernetes clusters.
+**Railway GitHub Actions Runners** — allows you to run self-hosted GitHub Actions runners on Railway.
+
+Example using Github Hosted runners:
+```yaml
+name: Runner Types
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ubuntu:
+    name: Runs on Ubuntu Latest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Runner Information
+        run: |
+          echo "Architecture: ${{ runner.os }}-${{ runner.arch }}"
+          echo "Distro Type: $(grep ID_LIKE /etc/os-release)"
+          echo "Runner Name: ${{ runner.name }}"
+
+  windows:
+    name: Runs on Windows Latest
+    runs-on: windows-latest
+    steps:
+      - name: Print Runner Information
+        run: |
+          echo "Architecture: ${{ runner.os }}-${{ runner.arch }}"
+          echo "Runner Name: ${{ runner.name }}"
+
+  mac:
+    name: Runs on macOS Latest
+    runs-on: macos-latest
+    steps:
+      - name: Print Runner Information
+        run: |
+          echo "Architecture: ${{ runner.os }}-${{ runner.arch }}"
+          echo "Runner Name: ${{ runner.name }}"
+```
+
+Example output on manual run:
+
+![alt text](/images/08-success.png)
