@@ -122,3 +122,60 @@ uses: sormuras/hello-world-java-action@34113a1c31b4deb2efc4810cd45ad16a90f45c3f
 Just like in [first example](#1-simple-hello-world-bash), after `git push`, you trigger this manually because of `workflow_dispatch`. If you run it, you should see:
 
 ![alt text](/images/02-success.png)
+
+## 3. Parallel vs Dependent Jobs
+
+When jobs are independent, they run in parallel but dependent jobs can only run after jobs which the specific job depends on is completed. Few things to remember:
+
+- Each step in a job runs only after prior step is success. If any step fails, workflow stops there. You can change default behavior but for now understanding this much is enough.
+- Each job runs in different runner (machine) by default, this means artifacts (files) created in one job is not available in another job.
+- If you need files for next job, you upload them in current job and download in the next job that requires it.
+- If a parallel job fails, GitHub immediately cancels all other currently running parallel jobs by default to save run time. This behavior can also be changed.
+
+```yaml
+on:
+  workflow_dispatch:
+
+jobs:
+  install_node:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Node.js
+        run: sudo apt-get update && sudo apt-get install nodejs -y
+
+  create_hello_world_js:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare Hello World Program In JavaScript
+        run: echo 'console.log("Hello, World!");' > hello.js
+
+      - name: Upload hello.js as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: javascript-code
+          path: hello.js
+
+  run_hello_world:
+    runs-on: ubuntu-latest
+    needs: 
+    - install_node
+    - create_hello_world_js
+
+    steps:
+      - name: Download hello.js artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: javascript-code
+
+      - name: Execute JavaScript File
+        run: node hello.js
+```
+
+You can see this dependency graph:
+- `install_node` and `create_hello_world_js` are independent of eachother, they are running parallelly but `run_hello_world` is waiting for jobs to complete:
+
+    ![alt text](/images/03-dependent-jobs.png)
+
+- After success:
+
+    ![alt text](/images/03-success-jobs.png)
