@@ -179,3 +179,135 @@ You can see this dependency graph:
 - After success:
 
     ![alt text](/images/03-success-jobs.png)
+
+## 4. Different Triggers
+
+```yaml
+name: Common Workflow Triggers
+
+on:
+  # Run for pushes to master or for version tags
+  push:
+    branches:
+      - master
+    tags:
+      - "v*"
+
+  # Run when a pull request targets master
+  pull_request:
+    branches:
+      - master
+
+  # Allow a manual run from the Actions tab
+  workflow_dispatch:
+
+  # Run once every day at 09:00 UTC
+#   schedule:
+#     - cron: "0 9 * * *"
+
+jobs:
+  show-trigger:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Show the event that started this workflow
+        run: |
+          echo "Workflow triggered by: ${{ github.event_name }}"
+```
+
+The key idea for learners is:
+
+- `push` → code or tags are pushed (`git push origin master`)
+- `pull_request` → a PR activity occurs
+- `workflow_dispatch` → someone starts it manually
+- `schedule` → runs on a cron schedule
+- `push.branches` → limit pushes to particular branches (only on `master` in this example)
+- `push.tags` → respond specifically to tags such as `git push origin v1.0.0`
+
+For example when I code push using:
+```bash
+git push origin master
+```
+
+The output shows `Workflow triggered by: push`:
+
+![alt text](/images/04-success-on-push.png)
+
+And when manually triggered, it's `workflow_dispatch`:
+
+![alt text](/images/04-success-on-workflow-dispatch.png)
+
+## 5. Workflow Filters
+
+```yaml
+name: Workflow Filters
+
+on:
+  push:
+    # Only run for these branches
+    branches:
+      - master
+      - develop
+
+    # Only run when files under these paths change
+    paths:
+      - "images/**"
+      - "README.md"
+
+    # Run for version tags such as v1.0.0
+    tags:
+      - "v*"
+
+  pull_request:
+    # Only run when the PR targets master
+    branches:
+      - master
+
+    # Ignore documentation-only changes
+    paths-ignore:
+      - "docs/**"
+      - "*.md"
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Run tests
+        run: echo "Running tests..."
+```
+
+In this example:
+```bash
+git add .gitignore
+git commit -m 'Add gitignore'
+git push origin master
+```
+Won't trigger the workflow because of:
+```yaml
+...
+    # Only run when files under these paths change
+    paths:
+      - "images/**"
+      - "README.md"
+```
+
+However when `README.md` is pushed:
+```bash
+git add README.md
+git commit -m 'Update README'
+git push origin master
+```
+The workflow is triggered:
+
+The main filters to know:
+
+- `branches` → run only for specific branches.
+- `branches-ignore` → exclude specific branches.
+- `tags` → run only for matching tags.
+- `tags-ignore` → exclude matching tags.
+- `paths` → run only when matching files/directories change.
+- `paths-ignore` → skip the workflow when only matching files change.
+
+> [!NOTE] 
+> **filters are event-specific**. The available filtering options depend on the trigger you're configuring, so `push`, `pull_request`, and other events don't all accept exactly the same filters.
