@@ -3,8 +3,8 @@ name: Common Workflow Triggers
 on:
   # Run for pushes to master or for version tags
   push:
-    branches:
-      - master
+    # branches:
+    #   - master
     tags:
       - "v*"
 

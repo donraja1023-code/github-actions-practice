@@ -1,0 +1,36 @@
+name: Workflow Filters
+
+on:
+  push:
+    # Only run for these branches
+    branches:
+      - master
+      - develop
+
+    # Only run when files under these paths change
+    paths:
+      - "images/**"
+      - "README.md"
+
+    # Run for version tags such as v1.0.0
+    tags:
+      - "v*"
+
+  pull_request:
+    # Only run when the PR targets master
+    branches:
+      - master
+
+    # Ignore documentation-only changes
+    paths-ignore:
+      - "docs/**"
+      - "*.md"
+
+jobs:
+  test:
+    name: Mimic Tests
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Run tests
+        run: echo "Running tests..."
