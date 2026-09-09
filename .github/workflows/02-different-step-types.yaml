@@ -1,0 +1,24 @@
+name: Different Types of Tasks/Steps You Can Run
+
+on:
+  workflow_dispatch:
+
+jobs:
+  hello_world_bash:
+    name: Say Hello World in Different Steps
+    runs-on: ubuntu-latest
+
+    steps:
+    # hello world in default shell
+      - name: Hello World in Bash
+        run: echo "Hello World From Bash!"
+
+      # run hello world function inside python interpreter
+      - name: Hello World in Python Shell
+        run: print("Hello World From Python Shell!")
+        shell: python
+      
+      - name: Hello Wold Using Github Marketplace Action
+        uses: sormuras/hello-world-java-action@v1
+        with:
+          who-to-greet: 'Mona the Octocat' 
