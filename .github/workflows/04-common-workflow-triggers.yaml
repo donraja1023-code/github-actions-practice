@@ -1,0 +1,30 @@
+name: Common Workflow Triggers
+
+on:
+  # Run for pushes to master or for version tags
+  push:
+    branches:
+      - master
+    tags:
+      - "v*"
+
+  # Run when a pull request targets master
+  pull_request:
+    branches:
+      - master
+
+  # Allow a manual run from the Actions tab
+  workflow_dispatch:
+
+  # Run once every day at 09:00 UTC
+#   schedule:
+#     - cron: "0 9 * * *"
+
+jobs:
+  show-trigger:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Show the event that started this workflow
+        run: |
+          echo "Workflow triggered by: ${{ github.event_name }}"
