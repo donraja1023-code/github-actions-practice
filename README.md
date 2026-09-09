@@ -66,7 +66,7 @@ jobs:
       - name: Saying Hello World
         run: echo "Hello World From Bash!"
 ```
-Since the workflow trigger is just `workflow_dispatch`, it runs manually when invoked from GHA UI. Click **Run Workflow** on your default branch below:
+The code will be available in Github once you `git push` and since the workflow trigger is just `workflow_dispatch`, it runs manually when invoked from GHA UI. Click **Run Workflow** on your default branch below:
 
 ![Simple Hello World in Bash](/images/01-simple-hello-world-in-bash.png)
 
@@ -118,3 +118,5 @@ uses: sormuras/hello-world-java-action@34113a1c31b4deb2efc4810cd45ad16a90f45c3f
 ```
 
 `34113a1c31b4deb2efc4810cd45ad16a90f45c3f` is nothing but commit hash you want to pin i.e. **you want exact this version because it is stable and works well for  your project**.
+
+Just like in [first example](#1-simple-hello-world-bash), after `git push`, you trigger this manually because of `workflow_dispatch`:
