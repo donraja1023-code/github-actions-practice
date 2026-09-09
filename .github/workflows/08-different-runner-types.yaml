@@ -1,0 +1,33 @@
+name: Runner Types
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ubuntu:
+    name: Runs on Ubuntu Latest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Runner Information
+        run: |
+          echo "Architecture: ${{ runner.os }}-${{ runner.arch }}"
+          echo "Distro Type: $(grep ID_LIKE /etc/os-release)"
+          echo "Runner Name: ${{ runner.name }}"
+
+  windows:
+    name: Runs on Windows Latest
+    runs-on: windows-latest
+    steps:
+      - name: Print Runner Information
+        run: |
+          echo "Architecture: ${{ runner.os }}-${{ runner.arch }}"
+          echo "Runner Name: ${{ runner.name }}"
+
+  mac:
+    name: Runs on macOS Latest
+    runs-on: macos-latest
+    steps:
+      - name: Print Runner Information
+        run: |
+          echo "Architecture: ${{ runner.os }}-${{ runner.arch }}"
+          echo "Runner Name: ${{ runner.name }}"
