@@ -369,3 +369,174 @@ When run manually, the output for the `first-job` is:
 And the output for the `second-job` is:
 
 ![alt text](/images/06-second-job.png)
+
+## 7. Environment, Secrets and Variables
+
+```yaml
+name: Use Secrets and Environment Variables
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-24.04
+    environment: staging
+
+    env:
+      # Values configured at the repository level
+      REPO_SECRET: ${{ secrets.DEPLOY_SECRET }}
+      REPO_SETTING: ${{ vars.DEPLOY_REGION }}
+
+      # Values configured specifically for the staging environment
+      STAGING_SECRET: ${{ secrets.STAGING_TOKEN }}
+      STAGING_SETTING: ${{ vars.STAGING_URL }}
+
+    steps:
+      - name: Display configured values
+        run: |
+          echo "Repository secret:     $REPO_SECRET"
+          echo "Repository variable:   $REPO_SETTING"
+          echo "Staging secret:        $STAGING_SECRET"
+          echo "Staging variable:      $STAGING_SETTING"
+
+  deploy-production:
+    runs-on: ubuntu-24.04
+    environment: production
+
+    env:
+      # Repository-level values are available here too
+      REPO_SECRET: ${{ secrets.DEPLOY_SECRET }}
+      REPO_SETTING: ${{ vars.DEPLOY_REGION }}
+
+      # These values come from the production environment
+      PRODUCTION_SECRET: ${{ secrets.PRODUCTION_TOKEN }}
+      PRODUCTION_SETTING: ${{ vars.PRODUCTION_URL }}
+
+    steps:
+      - name: Display configured values
+        run: |
+          echo "Repository secret:     $REPO_SECRET"
+          echo "Repository variable:   $REPO_SETTING"
+          echo "Production secret:     $PRODUCTION_SECRET"
+          echo "Production variable:   $PRODUCTION_SETTING"
+```
+
+What this example teaches:
+
+- **Repository secrets/variables** are configured at the repository level and can be used by jobs that have access to them.
+- **Environment secrets/variables** belong to a specific environment such as `staging` or `production`.
+- `environment: staging` tells GitHub that the job is associated with the **staging environment**.
+- `environment: production` does the same for **production**.
+- Secrets are automatically **masked in workflow logs**, so printing a secret isn't a good way to inspect its actual value.
+- `${{ secrets.NAME }}` accesses a secret, while `${{ vars.NAME }}` accesses a non-secret configuration variable.
+
+ A nice conceptual distinction for learners is:
+
+```
+Repository
+├── Secrets
+│   └── DEPLOY_SECRET
+└── Variables
+    └── DEPLOY_REGION
+
+Environments
+├── staging
+│   ├── Secrets
+│   │   └── STAGING_TOKEN
+│   └── Variables
+│       └── STAGING_URL
+│
+└── production
+    ├── Secrets
+    │   └── PRODUCTION_TOKEN
+    └── Variables
+        └── PRODUCTION_URL
+```
+
+This makes it easier to see that **repository-level configuration is shared**, while **environment-level configuration can differ between staging and production**.
+
+### Before running the workflow
+
+In your GitHub repository, go to:
+
+**Settings → Secrets and variables → Actions**
+
+Create these **repository-level** values:
+
+- Repository secret: `DEPLOY_SECRET`
+- Repository variable: `DEPLOY_REGION`
+
+Then configure the environments:
+
+**Settings → Environments → New environment**
+
+Create:
+
+- `staging`
+- `production`
+
+Inside each environment, add its own values.
+
+For `staging`:
+
+- Environment secret: `STAGING_TOKEN`
+- Environment variable: `STAGING_URL`
+
+For `production`:
+
+- Environment secret: `PRODUCTION_TOKEN`
+- Environment variable: `PRODUCTION_URL`
+
+For example:
+
+```
+Repository
+│
+├── Secrets
+│   └── DEPLOY_SECRET
+│
+├── Variables
+│   └── DEPLOY_REGION
+│
+└── Environments
+    │
+    ├── staging
+    │   ├── Secrets
+    │   │   └── STAGING_TOKEN
+    │   └── Variables
+    │       └── STAGING_URL
+    │
+    └── production
+        ├── Secrets
+        │   └── PRODUCTION_TOKEN
+        └── Variables
+            └── PRODUCTION_URL
+```
+
+Then the workflow can access them using:
+
+```
+env:
+  REPO_SECRET: ${{ secrets.DEPLOY_SECRET }}
+  REPO_SETTING: ${{ vars.DEPLOY_REGION }}
+  ENV_SECRET: ${{ secrets.STAGING_TOKEN }}
+  ENV_SETTING: ${{ vars.STAGING_URL }}
+```
+
+The important relationship is:
+
+**GitHub Settings → create configuration → workflow references it with `${{ secrets.* }}` or `${{ vars.* }}`.**
+
+Also, the `environment: staging` / `environment: production` setting is important: it tells GitHub **which environment's configuration and protection rules apply to that job**.
+
+When you run the workflow manually, you will see all the secrets are masked (`***`) and variables can be `echo`ed:
+
+Staging:
+
+![alt text](/images/07-staging.png)
+
+Production:
+
+![alt text](/images/07-prod.png)
+
