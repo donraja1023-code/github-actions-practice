@@ -311,3 +311,61 @@ The main filters to know:
 
 > [!NOTE] 
 > **filters are event-specific**. The available filtering options depend on the trigger you're configuring, so `push`, `pull_request`, and other events don't all accept exactly the same filters.
+
+## 6. Environment Variable Scope
+
+```yaml
+name: Demonstrate Environment Variable Scope
+
+on:
+  workflow_dispatch:
+
+env:
+  GLOBAL_MESSAGE: available_to_all_jobs
+
+jobs:
+  first-job:
+    runs-on: ubuntu-24.04
+
+    env:
+      JOB_MESSAGE: available_inside_first_job
+
+    steps:
+      - name: Check variables from step one
+        env:
+          LOCAL_MESSAGE: available_only_in_this_step
+        run: |
+          echo "Global: $GLOBAL_MESSAGE"
+          echo "Job:    $JOB_MESSAGE"
+          echo "Step:   $LOCAL_MESSAGE"
+
+      - name: Check variables from step two
+        run: |
+          echo "Global: $GLOBAL_MESSAGE"
+          echo "Job:    $JOB_MESSAGE"
+          echo "Step:   ${LOCAL_MESSAGE:-not-defined}"
+
+  second-job:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Check variables in another job
+        run: |
+          echo "Global: $GLOBAL_MESSAGE"
+          echo "Job:    ${JOB_MESSAGE:-not-defined}"
+          echo "Step:   ${LOCAL_MESSAGE:-not-defined}"
+```
+
+This demonstrates three levels of scope:
+
+- **Workflow-level:** `GLOBAL_MESSAGE` is inherited by both jobs.
+- **Job-level:** `JOB_MESSAGE` exists only within `first-job`.
+- **Step-level:** `LOCAL_MESSAGE` exists only during the step where it is declared.
+
+When run manually, the output for the `first-job` is:
+
+![alt text](/images/06-first-job.png)
+
+And the output for the `second-job` is:
+
+![alt text](/images/06-second-job.png)
