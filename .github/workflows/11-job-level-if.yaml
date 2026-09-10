@@ -6,7 +6,7 @@ on:
 jobs:
   needs_linux:
     runs-on: ubuntu-latest
-    if: vars.required_os != 'Windows'
+    if: vars.required_os_here != 'Windows'
     steps:
       - name: Print Runner OS
         run: echo "Runner OS => ${{ runner.os }}"
