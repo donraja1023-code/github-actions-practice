@@ -1,0 +1,15 @@
+name: If Conditional Step Levl
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Always runs"
+
+      - if: github.ref_name == 'main'
+        run: echo "Only runs on main"
+
+      - if: github.ref_name != 'main'
+        run: echo "Only runs on non-main branches"

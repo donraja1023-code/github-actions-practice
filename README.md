@@ -663,3 +663,46 @@ The result:
 
 ![alt text](/images/10-expressions-output.png)
 
+## 11. Job Level If Conditions
+
+```yaml
+name: Job Level If Conditions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  needs_linux:
+    runs-on: ubuntu-latest
+    if: vars.required_os != 'Windows'
+    steps:
+      - name: Print Requied OS
+        run: echo "Runner OS => ${{ vars.required_os }}"
+
+  only_on_master:
+    if: github.ref_name == 'master'
+    runs-on: windows-latest
+    steps:
+      - name: Print Branch Name
+        run: echo "Branch Name => ${{ github.ref_name }}"
+```
+
+## 12. Step Level If Conditions
+
+```yaml
+name: If Conditional Step Levl
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Always runs"
+
+      - if: github.ref_name == 'main'
+        run: echo "Only runs on main"
+
+      - if: github.ref_name != 'main'
+        run: echo "Only runs on non-main branches"
+```

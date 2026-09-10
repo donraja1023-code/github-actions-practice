@@ -6,10 +6,10 @@ on:
 jobs:
   needs_linux:
     runs-on: ubuntu-latest
-    if: vars.required_os_here != 'Windows'
+    if: vars.required_os != 'Windows'
     steps:
-      - name: Print Runner OS
-        run: echo "Runner OS => ${{ runner.os }}"
+      - name: Print Requied OS
+        run: echo "Runner OS => ${{ vars.required_os }}"
 
   only_on_master:
     if: github.ref_name == 'master'
