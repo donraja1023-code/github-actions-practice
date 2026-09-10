@@ -598,3 +598,31 @@ jobs:
 Example output on manual run:
 
 ![alt text](/images/08-success.png)
+
+## 9. Workflow Summary
+
+```yaml
+name: Workflow Summary
+
+on:
+  workflow_dispatch:
+
+jobs:
+  say_hi_and_say_hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Hi
+        run: echo "Saying Hi!"
+
+      - name: Say Hello
+        run: echo "Saying Hello!"
+
+      - name: Job Summary
+        run: |
+          echo "### Summary ###" >> "$GITHUB_STEP_SUMMARY"
+          echo "Said Hi and Hello" >> "$GITHUB_STEP_SUMMARY"
+```
+
+Summary is shown on the same **Actions** Tab below your workflow:
+
+![alt text](/images/09-workflow-summary.png)
