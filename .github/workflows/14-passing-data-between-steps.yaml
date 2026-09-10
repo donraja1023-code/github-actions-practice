@@ -12,4 +12,4 @@ jobs:
         run: echo "username=alice"  >> "$GITHUB_OUTPUT"
 
       - name: Second Step Retrives `username`
-        run: echo "$username"
+        run: echo "username=${{ steps.first_step.output.username }}"
