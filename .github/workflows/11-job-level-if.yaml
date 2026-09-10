@@ -5,8 +5,8 @@ on:
 
 jobs:
   not_linux:
-    if: runner.os != 'linux'
     runs-on: ubuntu-latest
+    if: runner.os != 'linux'
     steps:
       - name: Print Runner OS
         run: echo "Runner OS => ${{ runner.os }}"
