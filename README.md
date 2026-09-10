@@ -766,3 +766,34 @@ jobs:
 ```
 Example output:
 ![alt text](/images/14-success.png)
+
+
+## 15. Passing Data Between Jobs
+
+```yaml
+name: Passing Info Btn Jobs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      VERSION: ${{ steps.version.outputs.value }}
+    steps:
+      - id: version
+        run: echo "value=2.1.0" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploying version(Empty)=${{ steps.version.outputs.value }}"   # empty — wrong context!
+  
+  deploy_correct:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploying version(Value Set Above)=${{ needs.build.outputs.VERSION }}" # VERSION — correct context!
+```
