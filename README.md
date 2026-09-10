@@ -706,3 +706,63 @@ jobs:
       - if: github.ref_name != 'main'
         run: echo "Only runs on non-main branches"
 ```
+
+Example output:
+
+![alt text](/images/12-success.png)
+
+## 13. Status Check Functions
+
+```yaml
+name: Status Chcek Functions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  xyz:
+    runs-on: ubuntu-latest
+    steps:
+    - run: exit 1
+      continue-on-error: true
+
+    - if: success()
+      run: echo "Runs only if everything before succeeded"
+
+    - if: failure()
+      run: echo "Runs only if something before failed"
+
+    - if: always()
+      run: echo "Runs no matter what happened before"
+
+    - if: cancelled()
+      run: echo "Runs only if the workflow was cancelled"`
+```
+
+Example output:
+
+![alt text](/images/13-output.png)
+
+## 14. Passing Data Between Steps
+
+You append `key=value` at `$GITHUB_OUTPUT` in one step and that `key` will be avl in next step at `steps.<step-id>.outputs.<key>`:
+
+```yaml
+name: Passing Data Between Steps
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: First Step Stores 'username=alice'
+        id: first_step # required to get output in the next step
+        run: echo "username=alice"  >> "$GITHUB_OUTPUT"
+
+      - name: Second Step Retrives `username`
+        run: echo "username=${{ steps.first_step.outputs.username }}"
+```
+Example output:
+![alt text](/images/14-success.png)
