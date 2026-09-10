@@ -7,7 +7,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      VERSION=${{ steps.version.outputs.value }}
+      VERSION: ${{ steps.version.outputs.value }}
     steps:
       - id: version
         run: echo "value=2.1.0" >> "$GITHUB_OUTPUT"
