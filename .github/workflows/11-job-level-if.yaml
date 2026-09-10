@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  needs_not_job_xyz:
+  needs_linux:
     runs-on: ubuntu-latest
-    if: needs.some_job != "xyz"
+    if: vars.required_os != "Windows"
     steps:
       - name: Print Runner OS
         run: echo "Runner OS => ${{ runner.os }}"
