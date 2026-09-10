@@ -1,0 +1,23 @@
+name: Status Chcek Functions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  xyz:
+    runs-on: ubuntu-latest
+    steps:
+    - run: exit 1
+      continue-on-error: true
+
+    - if: success()
+      run: echo "Runs only if everything before succeeded"
+
+    - if: failure()
+      run: echo "Runs only if something before failed"
+
+    - if: always()
+      run: echo "Runs no matter what happened before"
+
+    - if: cancelled()
+      run: echo "Runs only if the workflow was cancelled"`
