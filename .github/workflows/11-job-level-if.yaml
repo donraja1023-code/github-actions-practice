@@ -5,11 +5,11 @@ on:
 
 jobs:
   not_linux:
-  if: runner.os != "linux"
-  runs-on: ubuntu-latest
-  steps:
-    - name: Print Runner OS
-      run: echo "Runner OS => ${{ runner.os }}"
+    if: runner.os != "linux"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Runner OS
+        run: echo "Runner OS => ${{ runner.os }}"
 
   only_on_master:
     if: github.ref_name == "master"
