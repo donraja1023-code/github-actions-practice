@@ -1,0 +1,19 @@
+name: Job Level If Conditions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  not_linux:
+  if: runner.os != "linux"
+  runs-on: ubuntu-latest
+  steps:
+    - name: Print Runner OS
+      run: echo "Runner OS => ${{ runner.os }}"
+
+  only_on_master:
+    if: github.ref_name == "master"
+    runs-on: windows-latest
+    steps:
+      - name: Print Branch Name
+        run: echo "Branch Name => ${{ github.ref_name }}"
