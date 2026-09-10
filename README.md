@@ -626,3 +626,40 @@ jobs:
 Summary is shown on the same **Actions** Tab below your workflow:
 
 ![alt text](/images/09-workflow-summary.png)
+
+## 10. Expressions
+
+Expressions are written inside `{{ expression }}` and evaluates to `true` or `false`:
+```yaml
+name: Expressions Example
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  expressions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: is equals to
+        run: echo "5==5->${{ 5==5 }}"
+
+      - name: is not equals to
+        run: echo "5!=5->${{ 5!=5 }}"
+
+      - name: is less than
+        run: echo "4<=3->${{ 4==3 }}"
+
+      - name: github.ref_name is equals to 'main'
+        run: echo "Is ref_name 'main':${{ 'main' == github.ref_name }}"
+
+      - name: Combine Operation1(&&)
+        run: echo "True/False(&&)->${{ 1<2 && 3<3 }}"
+
+      - name: Combine Operation2(||)
+        run: echo "True/False(||)->${{ 1<2 || 2<3 }}"
+```
+The result:
+
+![alt text](/images/10-expressions-output.png)
+
