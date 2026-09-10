@@ -1,0 +1,19 @@
+name: Workflow Summary
+
+on:
+  workflow_dispatch:
+
+jobs:
+  say_hi_and_say_hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Hi
+        run: echo "Saying Hi!"
+
+      - name: Say Hello
+        run: echo "Saying Hello!"
+
+      - name: Job Summary
+        run: |
+          echo "### Summary ###" >> "$GITHUB_STEP_SUMMARY"
+          echo "Said Hi and Hello" >> "$GITHUB_STEP_SUMMARY"
