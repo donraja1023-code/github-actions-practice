@@ -23,5 +23,5 @@ jobs:
       - name: Combine Operation1(&&)
         run: echo "True/False(&&)->${{ 1<2 && 3<3 }}"
 
-      - name: Combine Operation2(&&)
+      - name: Combine Operation2(||)
         run: echo "True/False(||)->${{ 1<2 || 2<3 }}"
