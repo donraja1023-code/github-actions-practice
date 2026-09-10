@@ -15,7 +15,7 @@ jobs:
         run: echo "5!=5->${{ 5!=5 }}"
 
       - name: is less than
-        run: echo "4<=3->${{ 4==3 }}"
+        run: "echo 4<=3->${{ 4==3 }}"
 
       - name: github.ref_name is equals to 'main'
-        run: echo "Is ref_name 'main': ${{ 'main' == github.ref_name }}"
+        run: echo "Is ref_name 'main':${{ 'main' == github.ref_name }}"
