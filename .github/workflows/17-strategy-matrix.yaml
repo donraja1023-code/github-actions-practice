@@ -7,8 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        nums: [1,2,3]
+        nums: [1,2]
+        alphabets: [a,b]
 
     steps:
       - name: Print Num
-        run: echo "${{ matrix.nums }}"
+        run: echo "Num=${{ matrix.nums }}, Alphabet=${{ matrix.alphabets }}"
