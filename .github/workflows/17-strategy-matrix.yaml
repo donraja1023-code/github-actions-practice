@@ -1,0 +1,14 @@
+name: Strategy Matrix
+
+on: [workflow_dispatch]
+
+jobs:
+  matrix_demo:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nums: [1,2,3]
+
+    steps:
+      - name: Print Num
+        run: echo "${{ matrix.nums }}"
