@@ -1,0 +1,22 @@
+name:  Max Parallel Check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.nums !=5 }}
+
+    strategy:
+      fail-fast: true
+      matrix:
+        nums: [1, 5, 9]
+
+    steps:
+      - name: Print Num ${{ matrix.nums }}
+        run: |
+          if [[ "${{ matrix.nums }}" -eq 5 ]]; then
+            exit 1
+          fi
+          echo "Num=${{ matrix.nums }}"
