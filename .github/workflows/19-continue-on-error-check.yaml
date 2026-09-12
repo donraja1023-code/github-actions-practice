@@ -1,4 +1,4 @@
-name:  Max Parallel Check
+name: Continue on Error Check
 
 on:
   workflow_dispatch:
