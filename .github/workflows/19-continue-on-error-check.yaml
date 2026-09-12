@@ -1,4 +1,4 @@
-name: Continue on Error Check
+name: Continue on Error Check + Max Parallel
 
 on:
   workflow_dispatch:
@@ -9,6 +9,7 @@ jobs:
     continue-on-error: ${{ matrix.nums !=5 }}
 
     strategy:
+      max-parallel: 1
       fail-fast: true
       matrix:
         nums: [1, 5, 9]
